@@ -9,7 +9,7 @@ R2 | 02-symbolic-code.md| init-symbols        | ترميز أساسي         | 
 L0 | 03-logic.md        | build-logic         | تحليل البيانات واتخاذ القرار | active | commit:142e2c89
 
 # المستقبل القريب
-A1 | 04-ai-correction.md | cognitive-correction | تصحيح أخطاء بأسلوب عقل بشري رقمي | active
+A1 | 04-ai-correction.md | cognitive- Add an AI cognitive regulation layer| تصحيح أخطاء بأسلوب عقل بشري رقمي | active
 I0 | Data-Connector     | link-memory-logic   | ربط Memory Zero بـ Logic Layer | pending
 A0 | AI-Analytics       | add-intelligence    | الذكاء الاصطناعي والتحليلات  | future
 V0 | Visualization      | add-dashboard       | واجهة عرض النتائج والتحليلات  | future
