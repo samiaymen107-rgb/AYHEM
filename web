@@ -30,7 +30,12 @@
   <link rel="stylesheet" href="ayhem-style.css">
 </head>
 <body>
-
+<!-- ملفات الجافاسكربت -->
+  <script src="ayhem-core.js"></script>
+  <script src="persistent-memory.js"></script>
+  <script src="ayhem-ai.js"></script>
+</body>
+</html>
   <div class="container">
     <h1>أيهم</h1>
     <p class="subtitle">أول عقل رقمي حي — واجهة التفاعل</p>
