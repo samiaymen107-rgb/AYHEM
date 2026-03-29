@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<title>أيهم — النسخة الذكية الشاملة</title>
+<style>
+body { font-family: Arial, sans-serif; background: #f4f4f4; color: #222; padding: 20px; }
+h1 { color: #0a3d62; }
+section { background: #fff; padding: 15px; margin-bottom: 15px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);}
+code { background: #eee; padding: 2px 4px; border-radius: 4px; }
+</style>
+</head>
+<body>
+
+<h1>أيهم — القالب الذكي الشامل</h1>
+
+<section>
+<h2>النسخ الذكية المدمجة</h2>
+<ul>
+<li>Smart</li>
+<li>Smart_Advanced</li>
+<li>Smart_Advanced_v2</li>
+</ul>
+<p>كل النسخ مدمجة ويمكن تشغيل أي تجربة مباشرة عبر واجهة هذا الملف.</p>
+</section>
+
+<section>
+<h2>Data Connector</h2>
+<pre><code># Data Connector — أيهم
+# مسؤول عن ربط البيانات بين الذكاء الاصطناعي والنظام المركزي
+# استدعاء الوظائف من ayhem-ai.js أو persistent-memory.js
+# تحميل البيانات من الذاكرة الدائمة أو الخارجية
+# تحويل كل تجربة إلى وحدة معرفة قابلة للفهرسة
+</code></pre>
+</section>
+
+<section>
+<h2>AI Connector (Python)</h2>
+<pre><code># ai_connector.py
+from ayhem_core import ExperienceManager
+
+def run_ai(experience_name):
+    em = ExperienceManager()
+    em.load(experience_name)
+    em.process()
+    return em.get_output()
+
+if __name__ == "__main__":
+    result = run_ai("Smart_Advanced_v2")
+    print(result)
+</code></pre>
+</section>
+
+<section>
+<h2>JavaScript Core — Ayhem AI</h2>
+<pre><code>
+// ayhem-ai.js
+const AYHEM = {
+  initExperience: function(name, containerSelector){
+    const container = document.querySelector(containerSelector);
+    container.innerHTML = `<p>تشغيل تجربة: ${name}</p>`;
+  }
+};
+</code></pre>
+</section>
+
+<section>
+<h2>Persistent Memory JS</h2>
+<pre><code>
+// persistent-memory.js
+export function loadMemory(version){
+  return `تحميل البيانات للنسخة: ${version}`;
+}
+</code></pre>
+</section>
+
+<section>
+<h2>تشغيل التجارب مباشرة</h2>
+<div id="experience-container"></div>
+<script>
+// دمج كل النسخ الذكية لتشغيل أي تجربة
+AYHEM.initExperience("Smart_Advanced_v2", "#experience-container");
+</script>
+</section>
+
+</body>
+</html>
