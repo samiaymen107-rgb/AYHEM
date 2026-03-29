@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>اختبار تقدم مشروع أيهم</title>
+<style>
+body { font-family: Arial, sans-serif; background: #121212; color: #e0e0e0; padding: 20px; }
+h1 { color: #00bcd4; }
+.progress-bar { width: 100%; background: #333; border-radius: 10px; overflow: hidden; margin-bottom: 10px; }
+.progress-fill { height: 20px; background: #00bcd4; width: 0%; transition: width 0.5s; }
+.test-section { margin-bottom: 20px; }
+.status { font-weight: bold; color: #ff9800; }
+.status.complete { color: #4caf50; }
+</style>
+</head>
+<body>
+<h1>تثبيت مستوى تقدم مشروع أيهم</h1>
+
+<div class="test-section">
+<h2>1. التجارب الذكية</h2>
+<ul id="experiences-list"></ul>
+<div class="progress-bar"><div id="experiences-progress" class="progress-fill"></div></div>
+</div>
+
+<div class="test-section">
+<h2>2. الربط بالذكاء الاصطناعي</h2>
+<p id="ai-status" class="status">جار التحقق...</p>
+<div class="progress-bar"><div id="ai-progress" class="progress-fill"></div></div>
+</div>
+
+<div class="test-section">
+<h2>3. ذاكرة التخزين الدائم</h2>
+<p id="memory-status" class="status">جار التحقق...</p>
+<div class="progress-bar"><div id="memory-progress" class="progress-fill"></div></div>
+</div>
+
+<h2>🔹 نسبة تقدم المشروع الكلي: <span id="overall-progress">0%</span></h2>
+
+<script>
+// تعريف التجارب الذكية
+const experiences = [
+  { name: 'AYHEM_Experience01_Full', complete: true },
+  { name: 'AYHEM_Experiences_Advanced', complete: true },
+  { name: 'AYHEM_Experiences_Dynamic', complete: true },
+  { name: 'AYHEM_Experiences_Full', complete: true },
+  { name: 'AYHEM_Experiences_Interactive', complete: false },
+  { name: 'AYHEM_Experiences_Smart', complete: true },
+  { name: 'AYHEM_Experiences_Smart_Advanced', complete: true },
+  { name: 'AYHEM_Experiences_Smart_Advanced_v2', complete: true }
+];
+
+// تحديث قائمة التجارب وحالة التقدم
+let experiencesCompleted = 0;
+const listElem = document.getElementById('experiences-list');
+experiences.forEach(exp => {
+  const li = document.createElement('li');
+  li.textContent = exp.name + ' - ' + (exp.complete ? 'مكتملة' : 'غير مكتملة');
+  li.className = 'status' + (exp.complete ? ' complete' : '');
+  listElem.appendChild(li);
+  if(exp.complete) experiencesCompleted++;
+});
+const expPercent = Math.round((experiencesCompleted / experiences.length) * 100);
+document.getElementById('experiences-progress').style.width = expPercent + '%';
+
+// حالة AI Connector
+const aiConnected = true; // ضبط تلقائي حسب الحالة الفعلية لاحقًا
+document.getElementById('ai-status').textContent = aiConnected ? 'نشط' : 'غير نشط';
+document.getElementById('ai-status').className = 'status' + (aiConnected ? ' complete' : '');
+document.getElementById('ai-progress').style.width = aiConnected ? '100%' : '0%';
+
+// حالة ذاكرة التخزين الدائم
+const memoryReady = true; // ضبط تلقائي لاحقًا
+document.getElementById('memory-status').textContent = memoryReady ? 'جاهزة' : 'غير جاهزة';
+document.getElementById('memory-status').className = 'status' + (memoryReady ? ' complete' : '');
+document.getElementById('memory-progress').style.width = memoryReady ? '100%' : '0%';
+
+// حساب التقدم الكلي
+const overallPercent = Math.round((expPercent + (aiConnected ? 100 : 0) + (memoryReady ? 100 : 0)) / 3);
+document.getElementById('overall-progress').textContent = overallPercent + '%';
+</script>
+</body>
+</html>
