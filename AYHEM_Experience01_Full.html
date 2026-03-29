@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<title>مشروع أيهم – تجربة 01 شاملة</title>
+<style>
+  body { font-family: Arial, sans-serif; background: #f5f5f5; padding: 20px; }
+  #experience, #experience-blog { padding: 15px; background: #fff; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); margin-bottom: 20px; }
+  h1,h2 { margin-bottom: 10px; }
+</style>
+</head>
+<body>
+
+<h1>واجهة مشروع أيهم – تجربة 01</h1>
+<div id="experience">جاري تحميل البيانات...</div>
+
+<h2>عرض تجربة 01 في المدونة</h2>
+<div id="experience-blog">جاري تحميل البيانات...</div>
+
+<script>
+// بيانات تجربة 01 – JSON داخل الملف نفسه
+const experienceData = {
+  "title": "تجربة 01 – الذاكرة الرقمية",
+  "result": "تم تحويل تجربة 01 إلى نموذج عملي ومرئي على الواجهة والمدونة."
+};
+
+// عرض البيانات في واجهة AYHEM_WEB
+document.getElementById('experience').innerText = `${experienceData.title}: ${experienceData.result}`;
+
+// عرض البيانات في المدونة
+document.getElementById('experience-blog').innerText = `${experienceData.title}: ${experienceData.result}`;
+</script>
+
+</body>
+</html>
