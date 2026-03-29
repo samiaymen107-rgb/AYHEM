@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AYHEM Dashboard - العقل الرقمي الحي</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+  body { font-family: Arial, sans-serif; background: #1e1e2f; color: #f0f0f0; margin:0; padding:0; }
+  header { background: #2e2e4f; padding: 1rem; text-align: center; font-size: 1.8rem; font-weight: bold; }
+  main { padding: 1rem; }
+  #chartContainer { width: 100%; max-width: 900px; margin: auto; }
+  table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
+  th, td { border: 1px solid #555; padding: 0.5rem; text-align: center; }
+  th { background: #3e3e6f; }
+  td { background: #2e2e4f; }
+  .status-ok { color: #4caf50; font-weight: bold; }
+  .status-warning { color: #ffc107; font-weight: bold; }
+  .status-error { color: #f44336; font-weight: bold; }
+</style>
+</head>
+<body>
+<header>AYHEM - لوحة التحكم الذكية</header>
+<main>
+  <div id="chartContainer">
+    <canvas id="progressChart"></canvas>
+  </div>
+  <table id="modulesTable">
+    <thead>
+      <tr>
+        <th>المكون</th>
+        <th>عدد الملفات</th>
+        <th>تقدم (%)</th>
+        <th>الحالة</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+</main>
+
+<script>
+// ---------------------- إعداد المستودعات ----------------------
+const repoOwner = "samiaymen107-rgb";
+const repoName = "AYHEM";
+const branch = "main"; // أو الفرع الحالي
+
+// ---------------------- المكونات الأساسية ----------------------
+const modules = [
+  { name: "CORE", paths: ["ARCHITECTURE.md", "03-logic.md", "04-ai-correction.md", "05-symbolic-master.md"] },
+  { name: "تجارب", paths: ["AYHEM_Experience01_Full.html", "AYHEM_Experiences_Advanced.html", "AYHEM_Experiences_Dynamic.html", "AYHEM_Experiences_Full.html"] },
+  { name: "الذكاء الاصطناعي", paths: ["ai_connector.py", "ayhem-ai.js"] },
+  { name: "الذاكرة الدائمة", paths: ["persistent-memory.js", "Data-Connector.md"] }
+];
+
+// ---------------------- دوال مساعدة ----------------------
+async function fetchFile(path) {
+  const url = `https://api.github.com/repos/${repoOwner}/${repoName}/contents/${path}?ref=${branch}`;
+  const response = await fetch(url);
+  if (response.ok) {
+    const data = await response.json();
+    return true; // الملف موجود
+  } else {
+    return false; // الملف غير موجود
+  }
+}
+
+async function checkModule(module) {
+  let count = 0;
+  for (let path of module.paths) {
+    if (await fetchFile(path)) count++;
+  }
+  const progress = Math.round((count / module.paths.length) * 100);
+  let status = "غير مكتمل";
+  let statusClass = "status-error";
+  if (progress === 100) { status = "مكتمل"; statusClass = "status-ok"; }
+  else if (progress >= 50) { status = "جزئي"; statusClass = "status-warning"; }
+  return { ...module, count, progress, status, statusClass };
+}
+
+// ---------------------- عرض البيانات ----------------------
+async function updateDashboard() {
+  const results = [];
+  for (let mod of modules) {
+    const res = await checkModule(mod);
+    results.push(res);
+  }
+
+  // تحديث الجدول
+  const tbody = document.querySelector("#modulesTable tbody");
+  tbody.innerHTML = "";
+  results.forEach(r => {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `<td>${r.name}</td><td>${r.count}/${r.paths.length}</td><td>${r.progress}%</td><td class="${r.statusClass}">${r.status}</td>`;
+    tbody.appendChild(tr);
+  });
+
+  // تحديث الرسم البياني
+  const ctx = document.getElementById('progressChart').getContext('2d');
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: results.map(r => r.name),
+      datasets: [{
+        label: 'نسبة التقدم %',
+        data: results.map(r => r.progress),
+        backgroundColor: ['#4caf50','#2196f3','#ff9800','#f44336']
+      }]
+    },
+    options: {
+      responsive: true,
+      scales: { y: { beginAtZero: true, max: 100 } }
+    }
+  });
+}
+
+// ---------------------- تشغيل لوحة التحكم ----------------------
+updateDashboard();
+</script>
+</body>
+</html>
