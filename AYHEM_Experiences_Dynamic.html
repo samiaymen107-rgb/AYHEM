@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<title>مشروع أيهم – التجارب الديناميكية</title>
+<style>
+  body { font-family: Arial, sans-serif; background: #f5f5f5; padding: 20px; }
+  .experience { padding: 15px; background: #fff; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); margin-bottom: 20px; }
+  h1,h2 { margin-bottom: 10px; }
+</style>
+</head>
+<body>
+
+<h1>واجهة مشروع أيهم – جميع التجارب الديناميكية</h1>
+<div id="experience-container"></div>
+
+<h2>عرض التجارب في المدونة</h2>
+<div id="experience-blog-container"></div>
+
+<script>
+// مصفوفة التجارب – يمكن إضافة أي تجربة جديدة هنا مباشرة
+let experiences = [
+  { "title": "تجربة 01 – الذاكرة الرقمية", "result": "تم تحويل تجربة 01 إلى نموذج عملي ومرئي." },
+  { "title": "تجربة 02 – الترميز الرمزي", "result": "تم تحويل تجربة 02 إلى نموذج مرئي وتحليل البيانات." },
+  { "title": "تجربة 03 – الذكاء الاصطناعي", "result": "تم إنشاء نموذج AI لتحليل تجربة 03." },
+  { "title": "تجربة 04 – تحليل السلوك", "result": "تم جمع وتحليل بيانات السلوك في تجربة 04." },
+  { "title": "تجربة 05 – التنبؤ المستقبلي", "result": "تم بناء نموذج تنبؤ لتجربة 05." }
+];
+
+// دالة لإضافة تجربة جديدة تلقائيًا
+function addExperience(title, result) {
+  experiences.push({title, result});
+  renderExperiences();
+}
+
+// دالة لعرض التجارب في الواجهة والمدونة
+function renderExperiences() {
+  const container = document.getElementById('experience-container');
+  const blogContainer = document.getElementById('experience-blog-container');
+  container.innerHTML = '';
+  blogContainer.innerHTML = '';
+  
+  experiences.forEach(exp => {
+    const divUI = document.createElement('div');
+    divUI.className = 'experience';
+    divUI.innerText = `${exp.title}: ${exp.result}`;
+    container.appendChild(divUI);
+
+    const divBlog = document.createElement('div');
+    divBlog.className = 'experience';
+    divBlog.innerText = `${exp.title}: ${exp.result}`;
+    blogContainer.appendChild(divBlog);
+  });
+}
+
+// عرض جميع التجارب عند فتح الصفحة
+renderExperiences();
+
+// مثال لإضافة تجربة جديدة تلقائيًا (يمكنك تعطيل أو تعديل)
+addExperience("تجربة 06 – التوسع المستقبلي", "تمت إضافة تجربة 06 بشكل ديناميكي بدون تعديل الكود الأساسي.");
+
+</script>
+</body>
+</html>
