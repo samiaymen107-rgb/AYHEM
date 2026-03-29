@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>أيهم — تجربة ذكية متقدمة</title>
+<!-- ربط ملفات CSS الأساسية -->
+<link rel="stylesheet" href="styles/main.css">
+<!-- ربط JS الذكاء الاصطناعي -->
+<script type="module" src="ayhem-ai.js"></script>
+<script type="module" src="persistent-memory.js"></script>
+<script type="module" src="ai_connector.py"></script>
+</head>
+<body>
+<header>
+<h1>أيهم — العقل الرقمي الذكي المتقدم</h1>
+<p>تجربة متكاملة للذكاء الحي والتحليل الرمزي.</p>
+</header>
+
+<main>
+<section id="interface">
+<h2>واجهة المستخدم</h2>
+<div id="user-input">
+<label for="command">أدخل أمر أو استفسار:</label>
+<input type="text" id="command" placeholder="اكتب هنا…">
+<button id="send">تنفيذ</button>
+</div>
+
+<div id="output">
+<h3>النتائج:</h3>
+<pre id="results"></pre>
+</div>
+</section>
+
+<section id="memory-visualization">
+<h2>الذاكرة الرقمية</h2>
+<div id="memory-session">ذاكرة الجلسة: <span id="session-memory">فارغة</span></div>
+<div id="memory-persistent">الذاكرة الدائمة: <span id="persistent-memory">فارغة</span></div>
+<div id="memory-archive">الأرشيف الخارجي: <span id="archive-memory">فارغ</span></div>
+</section>
+
+<section id="symbolic-analysis">
+<h2>تحليل رمزي متقدم</h2>
+<div id="symbol-output">لا توجد بيانات حتى الآن.</div>
+</section>
+</main>
+
+<footer>
+<p>مشروع أيهم — أول عقل حي | مرخص بموجب MIT | © 2026</p>
+</footer>
+
+<script>
+// ربط واجهة المستخدم مع نظام الذكاء الاصطناعي
+import { processCommand, getResults } from './ayhem-ai.js';
+import { sessionMemory, persistentMemory, archiveMemory } from './persistent-memory.js';
+
+const commandInput = document.getElementById('command');
+const sendBtn = document.getElementById('send');
+const resultsOutput = document.getElementById('results');
+const sessionDisplay = document.getElementById('session-memory');
+const persistentDisplay = document.getElementById('persistent-memory');
+const archiveDisplay = document.getElementById('archive-memory');
+const symbolOutput = document.getElementById('symbol-output');
+
+sendBtn.addEventListener('click', async () => {
+    const command = commandInput.value.trim();
+    if (!command) return;
+    // معالجة الأمر عبر الذكاء الاصطناعي
+    const result = await processCommand(command);
+
+    // عرض النتائج
+    resultsOutput.textContent = result.output;
+
+    // تحديث الذاكرة
+    sessionDisplay.textContent = sessionMemory.getSnapshot();
+    persistentDisplay.textContent = persistentMemory.getSnapshot();
+    archiveDisplay.textContent = archiveMemory.getSnapshot();
+
+    // التحليل الرمزي
+    symbolOutput.textContent = result.symbolicAnalysis || 'لا توجد بيانات رمزية.';
+    
+    commandInput.value = '';
+});
+
+// تهيئة النظام عند التحميل
+window.addEventListener('load', () => {
+    sessionDisplay.textContent = sessionMemory.getSnapshot();
+    persistentDisplay.textContent = persistentMemory.getSnapshot();
+    archiveDisplay.textContent = archiveMemory.getSnapshot();
+    symbolOutput.textContent = 'جاهز للمعالجة.';
+});
+</script>
+</body>
+</html>
