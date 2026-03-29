@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<title>مشروع أيهم – النسخة الذكية</title>
+<style>
+  body { font-family: Arial, sans-serif; background: #121212; color: #f0f0f0; padding: 20px; }
+  h1,h2 { margin-bottom: 10px; color: #00d8ff; }
+  input, button { padding: 8px; margin: 5px 0; width: 100%; border-radius: 5px; border: 1px solid #ccc; }
+  button { cursor: pointer; background: #00d8ff; color: #000; font-weight: bold; border: none; transition: 0.3s; }
+  button:hover { background: #00b0cc; }
+  .experience { padding: 15px; margin-bottom: 20px; border-radius: 10px; 
+    background: linear-gradient(135deg, #00d8ff, #6a0dad); color: #fff;
+    box-shadow: 0 0 15px rgba(0,216,255,0.5); transition: transform 0.3s; }
+  .experience:hover { transform: translateY(-5px); }
+  #stats { margin-top: 20px; padding: 15px; background: #222; border-radius: 10px; }
+</style>
+</head>
+<body>
+
+<h1>مشروع أيهم – النسخة الذكية</h1>
+
+<div>
+  <h2>أضف تجربة جديدة</h2>
+  <input type="text" id="newTitle" placeholder="عنوان التجربة">
+  <input type="text" id="newResult" placeholder="نتيجة التجربة">
+  <button onclick="addExperienceFromInput()">إضافة التجربة</button>
+</div>
+
+<div>
+  <h2>إدارة التجارب</h2>
+  <button onclick="exportExperiences()">تصدير التجارب كملف JSON</button>
+  <input type="file" id="importFile" accept=".json">
+  <button onclick="importExperiences()">استيراد التجارب من ملف JSON</button>
+</div>
+
+<h2>التجارب على الواجهة</h2>
+<div id="experience-container"></div>
+
+<h2>التجارب في المدونة</h2>
+<div id="experience-blog-container"></div>
+
+<div id="stats">
+  <h2>إحصائيات التجارب</h2>
+  <p>عدد التجارب: <span id="totalCount">0</span></p>
+  <p>آخر تجربة: <span id="lastExp">-</span></p>
+  <p>تجربة عشوائية: <span id="randomExp">-</span></p>
+  <button onclick="showRandomExperience()">عرض تجربة عشوائية</button>
+</div>
+
+<script>
+// استرجاع التجارب من التخزين المحلي أو إنشاء مصفوفة افتراضية
+let experiences = JSON.parse(localStorage.getItem('ayhem_experiences')) || [
+  { "title": "تجربة 01 – الذاكرة الرقمية", "result": "تم تحويل تجربة 01 إلى نموذج عملي ومرئي." },
+  { "title": "تجربة 02 – الترميز الرمزي", "result": "تم تحويل تجربة 02 إلى نموذج مرئي وتحليل البيانات." },
+  { "title": "تجربة 03 – الذكاء الاصطناعي", "result": "تم إنشاء نموذج AI لتحليل تجربة 03." }
+];
+
+// دالة عرض التجارب
+function renderExperiences() {
+  const container = document.getElementById('experience-container');
+  const blogContainer = document.getElementById('experience-blog-container');
+  container.innerHTML = '';
+  blogContainer.innerHTML = '';
+
+  experiences.forEach(exp => {
+    const divUI = document.createElement('div');
+    divUI.className = 'experience';
+    divUI.innerText = `${exp.title}: ${exp.result}`;
+    container.appendChild(divUI);
+
+    const divBlog = document.createElement('div');
+    divBlog.className = 'experience';
+    divBlog.innerText = `${exp.title}: ${exp.result}`;
+    blogContainer.appendChild(divBlog);
+  });
+
+  updateStats();
+}
+
+// دالة إضافة تجربة جديدة
+function addExperienceFromInput() {
+  const title = document.getElementById('newTitle').value.trim();
+  const result = document.getElementById('newResult').value.trim();
+  if(title && result) {
+    experiences.push({title, result});
+    localStorage.setItem('ayhem_experiences', JSON.stringify(experiences));
+    renderExperiences();
+    document.getElementById('newTitle').value = '';
+    document.getElementById('newResult').value = '';
+  } else alert("الرجاء إدخال عنوان ونتيجة التجربة!");
+}
+
+// دالة تصدير التجارب كملف JSON
+function exportExperiences() {
+  const dataStr = JSON.stringify(experiences, null, 2);
+  const blob = new Blob([dataStr], {type: "application/json"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = "AYHEM_Experiences.json";
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+}
+
+// دالة استيراد التجارب من ملف JSON
+function importExperiences() {
+  const fileInput = document.getElementById('importFile');
+  const file = fileInput.files[0];
+  if (!file) { alert("اختر ملف JSON لاستيراده!"); return; }
+
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      const imported = JSON.parse(e.target.result);
+      if(Array.isArray(imported)) {
+        experiences = imported;
+        localStorage.setItem('ayhem_experiences', JSON.stringify(experiences));
+        renderExperiences();
+        alert("تم استيراد التجارب بنجاح!");
+      } else alert("ملف JSON غير صالح!");
+    } catch(err) {
+      alert("خطأ في قراءة الملف: " + err.message);
+    }
+  };
+  reader.readAsText(file);
+}
+
+// دالة تحديث الإحصائيات
+function updateStats() {
+  document.getElementById('totalCount').innerText = experiences.length;
+  document.getElementById('lastExp').innerText = experiences.length ? experiences[experiences.length-1].title : '-';
+}
+
+// دالة عرض تجربة عشوائية
+function showRandomExperience() {
+  if(!experiences.length) return alert("لا توجد تجارب للعرض!");
+  const random = experiences[Math.floor(Math.random()*experiences.length)];
+  document.getElementById('randomExp').innerText = `${random.title}: ${random.result}`;
+}
+
+// عرض التجارب عند فتح الصفحة
+renderExperiences();
+</script>
+
+</body>
+</html>
