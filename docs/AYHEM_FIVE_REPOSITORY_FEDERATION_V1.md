@@ -1,6 +1,6 @@
 # AYHEM Five-Repository Federation — V1
 
-Status: architecture specification prepared in a protected development branch. The five repositories themselves are not yet created because the connected GitHub actions currently expose repository read/write operations but no repository-creation operation.
+Status: five private repositories have been created and verified on the founder's GitHub account. AYHEM-LINK has an initial contract-baseline pull request in progress; the remaining service scaffolds and runtime connections are not yet complete.
 
 ## Mission
 
@@ -80,15 +80,16 @@ Each repository must contain:
 
 ## Integration sequence
 
-1. Create the five private repositories under the founder's account, with no initial public exposure.
-2. Add their initial scaffold and CI independently; do not fork or copy legacy secrets.
-3. Connect contracts through AYHEM-LINK before implementing cross-service calls.
-4. Implement AYHEM-GUARD policy and observability requirements before exposing endpoints.
-5. Implement AYHEM-MEMORY storage and verified restore before moving any legacy memory.
-6. Implement AYHEM-COGNITION against synthetic and explicitly approved test data.
-7. Implement AYHEM-AUTONOMY last, initially in dry-run mode with all external actions disabled.
-8. Run end-to-end failure, privacy, security, and recovery exercises.
-9. Only then propose production integration and deployment for founder review.
+1. [Complete] Create the five repositories as Private and verify visibility.
+2. [In progress] Establish the AYHEM-LINK contract baseline and CI through PR #1; review and merge only after checks pass.
+3. Add the remaining service scaffolds and CI independently; do not fork or copy legacy secrets.
+4. Connect implementations through the reviewed AYHEM-LINK contracts before enabling cross-service calls.
+5. Implement AYHEM-GUARD policy and observability requirements before exposing endpoints.
+6. Implement AYHEM-MEMORY storage and verified restore before moving any legacy memory.
+7. Implement AYHEM-COGNITION against synthetic and explicitly approved test data.
+8. Implement AYHEM-AUTONOMY last, initially in dry-run mode with all external actions disabled.
+9. Run end-to-end failure, privacy, security, and recovery exercises.
+10. Only then propose production integration and deployment for founder review.
 
 ## Non-negotiable safety gates
 
@@ -100,4 +101,4 @@ Each repository must contain:
 
 ## Current execution limitation
 
-The connected GitHub toolset can inspect repositories and create branches, files, commits, and pull requests, but it does not currently expose the GitHub repository-creation endpoint. Therefore this document is an implementation-ready federation specification, not evidence that the five repositories already exist. Once repository creation is available, create the five named repositories as private repositories and apply this baseline to each.
+All five named repositories now exist and their Private visibility has been verified. The initial AYHEM-LINK contract baseline is proposed in https://github.com/samiaymen107-rgb/AYHEM-LINK/pull/1. This is not yet proof of deployed APIs, cloud synchronization, background execution, or live cross-repository communication.
