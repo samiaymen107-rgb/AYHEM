@@ -83,4 +83,4 @@ Trade-offs:
 
 ## Current status
 
-This ADR records the proposed design only. Stage 1 exists in several repository pull requests and must be reviewed/merged independently. Stage 2 has not yet been implemented. Stage 3 is intentionally disabled pending explicit approval of narrowly scoped credentials.
+This ADR records the staged design. Stage 1 exists in repository-local validation workflows and must be reviewed/merged independently. Stage 2 has an initial metadata-only implementation proposed in [AYHEM-LINK PR #4](https://github.com/samiaymen107-rgb/AYHEM-LINK/pull/4): one LINK event-envelope to AYHEM_WEB adapter declaration, pinned revisions, local provider-schema Git blob verification, and fail-closed `unverified` status. Its CI run 44943575386 passed. This does not prove semantic compatibility; the declaration remains unverified and PR #4 is open. Stage 3 is intentionally disabled pending explicit approval of narrowly scoped credentials.
