@@ -58,4 +58,4 @@ No API key, token, password, private key, or recovery code may be stored in sour
 8. Conduct security review and staged deployment.
 
 ## Current status (2026-11-21)
-The architecture is a target design, not a claim that every layer is operational. A first isolated policy/memory/audit foundation and test workflow have been added in AYHEM_WEB on a separate draft pull request. Durable storage, continuous scheduling, secret-store configuration, and production integration remain incomplete.
+The architecture is a target design, not a claim that every layer is operational. A first isolated policy, memory, and audit foundation has been merged in AYHEM_WEB and is covered by automated Node and real-browser IndexedDB tests. This is a bounded foundation, not a continuously running autonomous service. Durable storage, continuous scheduling, secret-store configuration, and production integration remain incomplete.
