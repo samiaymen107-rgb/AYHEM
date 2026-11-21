@@ -1,0 +1,29 @@
+name: AYHEM AI Gateway Contract
+
+on:
+  pull_request:
+    paths:
+      - "contracts/ai-gateway/**"
+      - "tests/contracts/**"
+      - ".github/workflows/ai-gateway-contract.yml"
+  push:
+    branches: [main]
+    paths:
+      - "contracts/ai-gateway/**"
+      - "tests/contracts/**"
+
+permissions:
+  contents: read
+
+jobs:
+  contract:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Validate contract schemas and OpenAPI references
+        run: node --test tests/contracts/ai-gateway-contract.test.mjs

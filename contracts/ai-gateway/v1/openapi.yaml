@@ -1,0 +1,187 @@
+openapi: 3.1.0
+info:
+  title: AYHEM AI Gateway
+  version: 1.0.0
+  description: >
+    Canonical contract for authenticated requests from AYHEM clients to the
+    server-side AI gateway. Provider credentials remain server-side.
+paths:
+  /health:
+    get:
+      operationId: getGatewayHealth
+      summary: Read authenticated gateway readiness
+      security:
+        - CloudflareAccess: []
+      responses:
+        "200":
+          description: Gateway health and readiness
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "503":
+          $ref: "#/components/responses/Unavailable"
+  /:
+    post:
+      operationId: submitAIRequest
+      summary: Submit a prompt to AYHEM AI
+      security:
+        - CloudflareAccess: []
+      parameters:
+        - in: header
+          name: Content-Type
+          required: true
+          schema:
+            const: application/json
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AIRequest"
+      responses:
+        "200":
+          description: Successful AI response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AIResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "413":
+          $ref: "#/components/responses/TooLarge"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+        "502":
+          $ref: "#/components/responses/UpstreamError"
+        "503":
+          $ref: "#/components/responses/Unavailable"
+components:
+  securitySchemes:
+    CloudflareAccess:
+      type: apiKey
+      in: header
+      name: Cf-Access-Jwt-Assertion
+      description: >
+        Injected and signed by the Cloudflare Access edge after user/service
+        authentication. Browser code must not create or store this assertion.
+  schemas:
+    AIRequest:
+      type: object
+      additionalProperties: false
+      required: [input]
+      properties:
+        input:
+          type: string
+          minLength: 1
+          maxLength: 8000
+          description: User prompt after trimming whitespace.
+    AIResponse:
+      type: object
+      additionalProperties: false
+      required: [unit, output, requestId]
+      properties:
+        unit:
+          const: "U01-Σ"
+        output:
+          type: string
+          minLength: 1
+        requestId:
+          type: string
+          format: uuid
+    HealthResponse:
+      type: object
+      additionalProperties: false
+      required:
+        - service
+        - status
+        - mode
+        - aiConfigured
+        - rateLimitConfigured
+        - originConfigured
+        - ready
+      properties:
+        service:
+          const: AYHEM
+        status:
+          const: online
+        mode:
+          const: authenticated-gateway
+        aiConfigured:
+          type: boolean
+        rateLimitConfigured:
+          type: boolean
+        originConfigured:
+          type: boolean
+        ready:
+          type: boolean
+          description: True only when provider secret, rate limiter, and origin allow-list are configured.
+    ErrorResponse:
+      type: object
+      required: [error]
+      properties:
+        error:
+          type: string
+        status:
+          type: integer
+        maxLength:
+          type: integer
+  responses:
+    BadRequest:
+      description: Invalid JSON or missing input
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+    Unauthorized:
+      description: Missing or invalid Cloudflare Access assertion
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+    Forbidden:
+      description: Origin is not allow-listed
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+    NotFound:
+      description: Unknown route
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+    TooLarge:
+      description: Request body or input exceeds configured size limit
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+    RateLimited:
+      description: Per-identity rate limit exceeded
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+    UpstreamError:
+      description: AI provider returned an error or empty response
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+    Unavailable:
+      description: Gateway authentication, rate limiting, or provider is not configured
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
